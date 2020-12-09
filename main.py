@@ -42,7 +42,7 @@ class ItemEnterEventListener(EventListener):
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
-        vault = extension.preferences["obsidian_vault"]
+        vault = extension.preferences["obsidian_vault"].trim()
 
         keyword_search_note_vault = extension.preferences["obsidian_search_note_vault"]
         keyword_search_string_vault = extension.preferences[
