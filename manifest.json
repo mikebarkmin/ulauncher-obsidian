@@ -1,0 +1,33 @@
+{
+  "name": "Obsidian",
+  "required_api_version": "^2.0.0",
+  "description": "Manage your Obsidian Vault",
+  "developer_name": "Mike Barkmin",
+  "icon": "images/icon.png",
+  "options": {
+    "query_debounce": 0.1
+  },
+  "preferences": [
+    {
+      "id": "obsidian_vault",
+      "type": "input",
+      "name": "Vault",
+      "description": "Path to your vault (absolute)",
+      "default_value": ""
+    },
+    {
+      "id": "obsidian_search_note_vault",
+      "type": "keyword",
+      "name": "Search Note",
+      "description": "Search the name your notes",
+      "default_value": "on"
+    },
+    {
+      "id": "obsidian_search_string_vault",
+      "type": "keyword",
+      "name": "Search String",
+      "description": "Search the content of your notes",
+      "default_value": "of"
+    }
+  ]
+}
