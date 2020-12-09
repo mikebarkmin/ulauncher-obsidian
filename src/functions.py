@@ -1,12 +1,27 @@
 import os
 import glob
-from fuzzyfinder import fuzzyfinder
 from urllib.parse import quote, urlencode
 from pathlib import Path
 from typing import List
 import logging
+from ulauncher.utils.fuzzy_search import get_score
 
 logger = logging.getLogger(__name__)
+
+
+def fuzzyfinder(search: str, items: List[str]) -> List[str]:
+    """
+    >>> fuzzyfinder("hallo", ["hi", "hu", "hallo", "false"])
+    ['hallo', 'false', 'hi', 'hu']
+    """
+    scores = []
+    for i in items:
+        score = get_score(search, i)
+        scores.append((score, i))
+
+    scores = sorted(scores, key=lambda score: score[0], reverse=True)
+
+    return list(map(lambda score: score[1], scores))
 
 
 class Note:
@@ -67,7 +82,7 @@ def get_name_from_path(path: str) -> str:
 def find_note_in_vault(vault: str, search: str) -> List[Note]:
     """
     >>> find_note_in_vault("test-vault", "Test")
-    [Note<test-vault/Test.md>, Note<test-vault/Test2.md>, Note<test-vault/subdir/Hallo.md>, Note<test-vault/subdir/Test.md>]
+    [Note<test-vault/Test.md>, Note<test-vault/Test2.md>, Note<test-vault/subdir/Test.md>, Note<test-vault/subdir/Hallo.md>]
     """
     search_pattern = os.path.join(vault, "**", "*.md")
     logger.info(search_pattern)

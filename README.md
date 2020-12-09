@@ -1,12 +1,15 @@
 # Obsidian Ulauncher extension
 
-## Requirements
+This Ulauncher extension enables you to search your [obsidian.md](https://obsidian.md/) vault and create new notes on the fly.
 
-Be sure that all requirements are installed on your system. Currently you need to only have `fuzzyfinder` installed. Execute the following command to do that:
+## Install
+
+Then open Ulauncher preferences window > extensions > add extension and paste the following url:
 
 ```
-pip3 install --user fuzzyfinder==2.1.0
+https://github.com/mikebarkmin/ulauncher-obsidian
 ```
+
 
 ## Developer
 
