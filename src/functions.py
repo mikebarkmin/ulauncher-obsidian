@@ -16,7 +16,7 @@ def fuzzyfinder(search: str, items: List[str]) -> List[str]:
     """
     scores = []
     for i in items:
-        score = get_score(search, i)
+        score = get_score(search, get_name_from_path(i))
         scores.append((score, i))
 
     scores = sorted(scores, key=lambda score: score[0], reverse=True)

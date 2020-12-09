@@ -1,3 +1,10 @@
+from src.items import show_notes, create_note
+from src.functions import (
+    find_note_in_vault,
+    find_string_in_vault,
+    create_note_in_vault,
+    generate_url,
+)
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
@@ -12,15 +19,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-from src.functions import (
-    find_note_in_vault,
-    find_string_in_vault,
-    create_note_in_vault,
-    generate_url,
-)
-from src.items import show_notes, create_note
-
-
 class ObisidanExtension(Extension):
     def __init__(self):
         super(ObisidanExtension, self).__init__()
@@ -30,7 +28,7 @@ class ObisidanExtension(Extension):
 
 class ItemEnterEventListener(EventListener):
     def on_event(self, event, extension):
-        vault = extension.preferences["obsidian_vault"]
+        vault = extension.preferences["obsidian_vault"].trim()
         data = event.get_data()
         type = data.get("type")
 
