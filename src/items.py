@@ -18,7 +18,7 @@ def create_note(vault, name):
             icon=ICON_ADD_FILE,
             name=f'Create "{name}"',
             on_enter=ExtensionCustomAction(
-                {"type": "create-note", "name": name}, keep_app_open=False
+                {"type": "create-note", "name": name}, keep_app_open=True
             ),
         )
     ]

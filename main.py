@@ -35,7 +35,7 @@ class ItemEnterEventListener(EventListener):
         if type == "create-note":
             path = create_note_in_vault(vault, data.get("name"))
             url = generate_url(vault, path)
-            OpenUrlAction(url).run()
+            return OpenUrlAction(url)
 
         return DoNothingAction()
 
