@@ -11,7 +11,7 @@ from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
-from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
+from ulauncher.api.shared.action.OpenAction import OpenAction
 from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
 from ulauncher.api.shared.action.LaunchAppAction import LaunchAppAction
 import logging
@@ -35,7 +35,7 @@ class ItemEnterEventListener(EventListener):
         if type == "create-note":
             path = create_note_in_vault(vault, data.get("name"))
             url = generate_url(vault, path)
-            return OpenUrlAction(url)
+            return OpenAction(url)
 
         return DoNothingAction()
 
