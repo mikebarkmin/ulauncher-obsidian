@@ -51,8 +51,11 @@ def generate_url(vault: str, file: str) -> str:
     >>> generate_url("~/vault", "Java - Programming Language")
     'obsidian://open?vault=vault&file=Java%20-%20Programming%20Language.md'
 
+    >>> generate_url("~/Google Drive/Brain 1.0", "Java - Programming Language")
+    'obsidian://open?vault=Brain%201.0&file=Java%20-%20Programming%20Language.md'
+
     """
-    vault_name = get_name_from_path(vault)
+    vault_name = get_name_from_path(vault, exclude_ext=False)
     if not file.endswith(".md"):
         file = file + ".md"
 
@@ -69,14 +72,19 @@ def generate_url(vault: str, file: str) -> str:
         )
 
 
-def get_name_from_path(path: str) -> str:
+def get_name_from_path(path: str, exclude_ext=True) -> str:
     """
     >>> get_name_from_path("~/home/test/bla/hallo.md")
     'hallo'
+
+    >>> get_name_from_path("~/home/Google Drive/Brain 1.0", False)
+    'Brain 1.0'
     """
     base = os.path.basename(path)
-    split = os.path.splitext(base)
-    return split[0]
+    if exclude_ext:
+        split = os.path.splitext(base)
+        return split[0]
+    return base
 
 
 def find_note_in_vault(vault: str, search: str) -> List[Note]:
@@ -111,8 +119,7 @@ def find_string_in_vault(vault: str, search: str) -> List[Note]:
                 for line in f:
                     left, sep, right = line.lower().partition(search)
                     if sep:
-                        context = left[CONTEXT_SIZE:] + \
-                            sep + right[:CONTEXT_SIZE]
+                        context = left[CONTEXT_SIZE:] + sep + right[:CONTEXT_SIZE]
                         suggestions.append(
                             Note(
                                 name=get_name_from_path(file),
