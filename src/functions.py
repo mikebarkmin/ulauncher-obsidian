@@ -186,6 +186,7 @@ def find_string_in_vault(vault: str, search: str) -> List[Note]:
                                 description=context,
                             )
                         )
+                        break
 
     return suggestions
 
