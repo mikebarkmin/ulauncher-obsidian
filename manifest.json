@@ -28,6 +28,27 @@
       "name": "Search String",
       "description": "Search the content of your notes",
       "default_value": "of"
+    },
+    {
+      "id": "obsidian_open_daily",
+      "type": "keyword",
+      "name": "Open Daily",
+      "description": "Open the daily note",
+      "default_value": "od"
+    },
+    {
+      "id": "obsidian_quick_capture",
+      "type": "keyword",
+      "name": "Quick Capture",
+      "description": "Append text to your quick capture note",
+      "default_value": "oc"
+    },
+    {
+      "id": "obsidian_quick_capture_note",
+      "type": "input",
+      "name": "Quick Capture Note",
+      "description": "The note used for quick capture. If empty the daily note will be used.",
+      "default_value": ""
     }
   ]
 }

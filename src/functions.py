@@ -1,10 +1,15 @@
+from genericpath import exists
 import os
 import glob
+import json
+from datetime import datetime
 from urllib.parse import quote, urlencode
 from pathlib import Path
-from typing import List
+from typing import List, Literal
 import logging
 from ulauncher.utils.fuzzy_search import get_score
+
+from src.moment import convert_moment_to_strptime_format
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +39,7 @@ class Note:
         return f"Note<{self.path}>"
 
 
-def generate_url(vault: str, file: str) -> str:
+def generate_url(vault: str, file: str, mode: Literal["open", "new"] = "open") -> str:
     """
     >>> generate_url("~/vault", "test.md")
     'obsidian://open?vault=vault&file=test.md'
@@ -61,15 +66,69 @@ def generate_url(vault: str, file: str) -> str:
 
     try:
         relative_file = Path(file).relative_to(vault)
-        return "obsidian://open?" + urlencode(
-            {"vault": vault_name, "file": relative_file}, quote_via=quote
+        return (
+            "obsidian://"
+            + mode
+            + "?"
+            + urlencode({"vault": vault_name, "file": relative_file}, quote_via=quote)
         )
     except ValueError:
         if not file.endswith(".md"):
             file = file + ".md"
-        return "obsidian://open?" + urlencode(
-            {"vault": vault_name, "file": file}, quote_via=quote
+        return (
+            "obsidian://"
+            + mode
+            + "?"
+            + urlencode({"vault": vault_name, "file": file}, quote_via=quote)
         )
+
+
+class DailyPath:
+    path: str
+    date: str
+    folder: str
+    exists: bool
+
+    def __init__(self, path, date, folder, exists) -> None:
+        self.path = path
+        self.date = date
+        self.folder = folder
+        self.exists = exists
+
+
+def get_daily_path(vault: str) -> DailyPath:
+    daily_notes_path = os.path.join(vault, ".obsidian", "daily-notes.json")
+    with open(daily_notes_path) as f:
+        try:
+            daily_notes_config = json.load(f)
+        except:
+            daily_notes_config = {}
+        format = daily_notes_config.get("format", "YYYY-MM-DD")
+        folder = daily_notes_config.get("folder", "")
+
+        if format == "":
+            format = "YYYY-MM-DD"
+
+        date = datetime.now().strftime(convert_moment_to_strptime_format(format))
+        path = os.path.join(vault, folder, date + ".md")
+        exists = os.path.exists(path)
+
+        return DailyPath(path, date, folder, exists)
+
+
+def generate_daily_url(vault: str) -> str:
+    """
+    >>> generate_daily_url("~/vault")
+    'obsidian://new?vault=vault&file=2021-07-16.md'
+    """
+    daily_path = get_daily_path(vault)
+    mode = "new"
+    if daily_path.exists:
+        mode = "open"
+
+    return generate_url(
+        vault, os.path.join(daily_path.folder, daily_path.date), mode=mode
+    )
 
 
 def get_name_from_path(path: str, exclude_ext=True) -> str:
@@ -137,6 +196,18 @@ def create_note_in_vault(vault: str, name: str) -> str:
         with open(path, "w") as f:
             f.write(f"# {name}")
     return path
+
+
+def append_to_note_in_vault(vault: str, file: str, content: str):
+    if file == "":
+        file = get_daily_path(vault).path
+    elif not file.endswith(".md"):
+        file = file + ".md"
+    path = os.path.join(vault, file)
+
+    with open(path, "a") as f:
+        f.write(os.linesep)
+        f.write(content)
 
 
 if __name__ == "__main__":

@@ -10,8 +10,8 @@ Keywords are customizable
 
 * on: Open note based on filename
 * of: Search the content of all notes
-* [Planned] od: Open daily note
-* [Planned] oc: Quick capture to a note
+* od: Open daily note
+* oc: Quick capture to a note
 
 ## Install
 
@@ -27,8 +27,9 @@ https://github.com/mikebarkmin/ulauncher-obsidian
 
 ### Run Test
 
-Currently doctest is used for the `functions` module. To run the tests execute the following command:
+Currently, doctest is used for the `functions` and `moment` module. To run the tests execute the following command:
 
 ```
 python3 src/functions.py
+python3 src/moment.py
 ``` 
