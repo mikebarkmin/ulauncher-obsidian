@@ -136,7 +136,7 @@ def get_periodic_settings(vault: str) -> DailySettings:
         config = json.load(f)
         f.close()
     except:
-        return get_daily_settings(vault)
+        config = {}
 
     daily_config = config.get("daily", {})
     format = daily_config.get("format", "YYYY-MM-DD")
@@ -148,8 +148,32 @@ def get_periodic_settings(vault: str) -> DailySettings:
     return DailySettings(format, folder)
 
 
+def is_obsidian_plugin_enabled(vault: str, name: str) -> bool:
+    core = os.path.join(vault, ".obsidian", "core-plugins.json")
+    community = os.path.join(vault, ".obsidian", "community-plugins.json")
+    plugins = []
+    try:
+        with open(core) as f:
+            core = json.load(f)
+            plugins += core
+    except:
+        pass
+
+    try:
+        with open(community) as f:
+            community = json.load(f)
+            plugins += community
+    except:
+        pass
+
+    return name in plugins
+
+
 def get_daily_path(vault: str) -> DailyPath:
-    settings = get_periodic_settings(vault)
+    if is_obsidian_plugin_enabled(vault, "periodic-notes"):
+        settings = get_periodic_settings(vault)
+    else:
+        settings = get_daily_settings(vault)
 
     date = datetime.datetime.now().strftime(
         convert_moment_to_strptime_format(settings.format)
