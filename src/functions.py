@@ -101,7 +101,16 @@ class DailyPath:
         self.exists = exists
 
 
-def get_daily_path(vault: str) -> DailyPath:
+class DailySettings:
+    format: str
+    folder: str
+
+    def __init__(self, format, folder) -> None:
+        self.folder = folder
+        self.format = format
+
+
+def get_daily_settings(vault: str) -> DailySettings:
     daily_notes_path = os.path.join(vault, ".obsidian", "daily-notes.json")
     try:
         f = open(daily_notes_path, "r")
@@ -115,17 +124,46 @@ def get_daily_path(vault: str) -> DailyPath:
     if format == "":
         format = "YYYY-MM-DD"
 
-    date = datetime.datetime.now().strftime(convert_moment_to_strptime_format(format))
-    path = os.path.join(vault, folder, date + ".md")
+    return DailySettings(format, folder)
+
+
+def get_periodic_settings(vault: str) -> DailySettings:
+    periodic_path = os.path.join(
+        vault, ".obsidian", "plugins", "periodic-notes", "data.json"
+    )
+    try:
+        f = open(periodic_path)
+        config = json.load(f)
+        f.close()
+    except:
+        return get_daily_settings(vault)
+
+    daily_config = config.get("daily", {})
+    format = daily_config.get("format", "YYYY-MM-DD")
+    folder = daily_config.get("folder", "")
+
+    if format == "":
+        format = "YYYY-MM-DD"
+
+    return DailySettings(format, folder)
+
+
+def get_daily_path(vault: str) -> DailyPath:
+    settings = get_periodic_settings(vault)
+
+    date = datetime.datetime.now().strftime(
+        convert_moment_to_strptime_format(settings.format)
+    )
+    path = os.path.join(vault, settings.folder, date + ".md")
     exists = os.path.exists(path)
 
-    return DailyPath(path, date, folder, exists)
+    return DailyPath(path, date, settings.folder, exists)
 
 
 def generate_daily_url(vault: str) -> str:
     """
-    >>> generate_daily_url("~/vault")
-    'obsidian://new?vault=vault&file=2021-07-16.md'
+    >>> generate_daily_url("test-vault")
+    'obsidian://new?vault=test-vault&file=16-07-2021.md'
     """
     daily_path = get_daily_path(vault)
     mode = "new"
