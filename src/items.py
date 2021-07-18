@@ -3,7 +3,7 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.OpenAction import OpenAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 
-from src.functions import generate_url, Note
+from .functions import generate_url, Note
 
 
 ICON_FILE = "images/icon.png"

@@ -29,7 +29,12 @@ https://github.com/mikebarkmin/ulauncher-obsidian
 
 Currently, doctest is used for the `functions` and `moment` module. To run the tests execute the following command:
 
+Install time_machine:
 ```
-python3 src/functions.py
-python3 src/moment.py
+pip install time_machine
+```
+
+```
+python3 -m src.functions
+python3 -m src.moment
 ``` 
