@@ -51,7 +51,7 @@
       "default_value": ""
     },
     {
-      "id": "number_of_note",
+      "id": "number_of_notes",
       "type": "input",
       "name": "Limit the number notes to select",
       "default_value": 8
