@@ -35,7 +35,8 @@ def quick_capture_note(content):
             icon=ICON_ADD_FILE,
             name="Quick Capture to Note",
             on_enter=ExtensionCustomAction(
-                {"type": "quick-capture-to-note", "content": content}, keep_app_open=True
+                {"type": "quick-capture-to-note", "content": content},
+                keep_app_open=True,
             ),
         ),
     ]
@@ -65,4 +66,14 @@ def select_note(notes: List[Note]):
             ),
         )
         for note in notes[:10]
+    ]
+
+
+def cancel():
+    return [
+        ExtensionResultItem(
+            icon=ICON_FILE,
+            name="Cancel",
+            on_enter=ExtensionCustomAction({"type": "cancel"}, keep_app_open=True),
+        )
     ]

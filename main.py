@@ -2,7 +2,7 @@ import gi
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 
 gi.require_version("Gdk", "3.0")
-from src.items import quick_capture_note, show_notes, create_note, select_note
+from src.items import quick_capture_note, show_notes, create_note, select_note, cancel
 from src.functions import (
     append_to_note_in_vault,
     find_note_in_vault,
@@ -102,18 +102,21 @@ class KeywordQueryEventListener(EventListener):
             notes = find_note_in_vault(vault, search)
             items = select_note(notes)
             items += create_note(search)
+            items += cancel()
             return RenderResultListAction(items)
 
         if keyword == keyword_search_note_vault:
             notes = find_note_in_vault(vault, search)
             items = show_notes(vault, notes)
             items += create_note(search)
+            items += cancel()
             return RenderResultListAction(items)
 
         elif keyword == keyword_search_string_vault:
             notes = find_string_in_vault(vault, search)
             items = show_notes(vault, notes)
             items += create_note(search)
+            items += cancel()
             return RenderResultListAction(items)
 
         elif keyword == keyword_open_daily:
