@@ -49,6 +49,12 @@
       "name": "Quick Capture Note",
       "description": "The note used for quick capture. If empty the daily note will be used.",
       "default_value": ""
+    },
+    {
+      "id": "number_of_note",
+      "type": "input",
+      "name": "Limit the number notes to select",
+      "default_value": 8
     }
   ]
 }

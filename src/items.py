@@ -42,7 +42,7 @@ def quick_capture_note(content):
     ]
 
 
-def show_notes(vault, notes: List[Note]):
+def show_notes(vault, notes: List[Note], limit = 10):
     return [
         ExtensionResultItem(
             icon=ICON_FILE,
@@ -50,11 +50,11 @@ def show_notes(vault, notes: List[Note]):
             description=note.description,
             on_enter=OpenAction(generate_url(vault, note.path)),
         )
-        for note in notes[:10]
+        for note in notes[:limit]
     ]
 
 
-def select_note(notes: List[Note]):
+def select_note(notes: List[Note], limit = 10):
     return [
         ExtensionResultItem(
             icon=ICON_FILE,
@@ -65,7 +65,7 @@ def select_note(notes: List[Note]):
                 keep_app_open=True,
             ),
         )
-        for note in notes[:10]
+        for note in notes[:limit]
     ]
 
 

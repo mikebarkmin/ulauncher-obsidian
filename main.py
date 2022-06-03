@@ -94,27 +94,28 @@ class KeywordQueryEventListener(EventListener):
         ]
         keyword_open_daily = extension.preferences["obsidian_open_daily"]
         keyword_quick_capture = extension.preferences["obsidian_quick_capture"]
+        number_of_notes = int(extension.preferences.get("number_of_notes", 8))
 
         keyword = event.get_keyword()
         search = event.get_argument()
 
         if extension.state == "quick-capture-to-note":
             notes = find_note_in_vault(vault, search)
-            items = select_note(notes)
+            items = select_note(notes, number_of_notes)
             items += create_note(search)
             items += cancel()
             return RenderResultListAction(items)
 
         if keyword == keyword_search_note_vault:
             notes = find_note_in_vault(vault, search)
-            items = show_notes(vault, notes)
+            items = show_notes(vault, notes, number_of_notes)
             items += create_note(search)
             items += cancel()
             return RenderResultListAction(items)
 
         elif keyword == keyword_search_string_vault:
             notes = find_string_in_vault(vault, search)
-            items = show_notes(vault, notes)
+            items = show_notes(vault, notes, number_of_notes)
             items += create_note(search)
             items += cancel()
             return RenderResultListAction(items)
