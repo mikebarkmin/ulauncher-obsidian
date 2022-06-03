@@ -22,15 +22,22 @@ def create_note(name):
     ]
 
 
-def quick_capute_note(content):
+def quick_capture_note(content):
     return [
         ExtensionResultItem(
             icon=ICON_ADD_FILE,
-            name=f"Quick Capture",
+            name="Quick Capture",
             on_enter=ExtensionCustomAction(
                 {"type": "quick-capture", "content": content}, keep_app_open=True
             ),
-        )
+        ),
+        ExtensionResultItem(
+            icon=ICON_ADD_FILE,
+            name="Quick Capture to Note",
+            on_enter=ExtensionCustomAction(
+                {"type": "quick-capture-to-note", "content": content}, keep_app_open=True
+            ),
+        ),
     ]
 
 
@@ -41,6 +48,21 @@ def show_notes(vault, notes: List[Note]):
             name=note.name,
             description=note.description,
             on_enter=OpenAction(generate_url(vault, note.path)),
+        )
+        for note in notes[:10]
+    ]
+
+
+def select_note(notes: List[Note]):
+    return [
+        ExtensionResultItem(
+            icon=ICON_FILE,
+            name=note.name,
+            description=note.description,
+            on_enter=ExtensionCustomAction(
+                {"type": "select-note", "note": note},
+                keep_app_open=True,
+            ),
         )
         for note in notes[:10]
     ]
