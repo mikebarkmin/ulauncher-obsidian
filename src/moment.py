@@ -1,6 +1,7 @@
 # the order is important
 token_map = {
     "%": "%%",
+    "A": "%p",
     "ww": "%W",
     "dddd": "%A",
     "ddd": "%a",
@@ -12,7 +13,6 @@ token_map = {
     "YY": "%y",
     "HH": "%H",
     "hh": "%I",
-    "A": "%p",
     "mm": "%M",
     "SSS": "%f",
     "ss": "%S",
@@ -21,7 +21,6 @@ token_map = {
     "DDDD": "%j",
     "DD": "%d",
 }
-
 
 def convert_moment_to_strptime_format(moment_date: str):
     """
